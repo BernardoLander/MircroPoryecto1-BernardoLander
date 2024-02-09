@@ -1,5 +1,13 @@
 
 
+// Variables para el juego
+let jugadores = [];
+let tamanoCarton;
+let cartones;
+let numerosSacados = [];
+let turnoActual = 1;
+let puntosJugadores = {};
+
 
 
 
