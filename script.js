@@ -8,8 +8,10 @@ botonInicio.addEventListener("click", function(){
 
 
 
-
-const formulario = document.getElementById('formulario');
+const storage = window.localStorage;
+const formularioInicial = document.getElementById('formulario');
+const formularioNombre = document.getElementById('formularioNombres');
+const botonEmpezarJuego = document.getElementById("empezarJuego");
 
 
 // Variables para el juego
@@ -19,6 +21,8 @@ let cantidadJugadores;
 let turnoActual = 0;
 let numerosSacados = [];
 let opciones = [];
+let jugadores = [];
+let isFormValid = false;
 
 
 
@@ -30,21 +34,84 @@ for (let i = 1; i <= 50; i++) {
 
 
 
+
 //Event listener del formulario
-formulario.addEventListener("submit",function(e) {
+formularioInicial.addEventListener("submit",function(e) {
     e.preventDefault();
+    toggleDiv("formularioNombres");
     cantidadJugadores = document.getElementById("jugadores").value;
     tamanoCarton = document.getElementById("tamano").value
-    for (let i = 0; i <cantidadJugadores; i++) {
-        nombres.push("Jugador " + (i + 1));
+    document.getElementById("formularioNombres").innerHTML ="";
+
+    var dynamicForm = document.createElement("form");
+
+
+  for (var i = 1; i <= cantidadJugadores; i++) {
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = "Jugador" + i;
+    input.placeholder = "Nombre Jugador " + (i);
+    input.id = "jugador"+i;
+    dynamicForm.appendChild(input);
+    dynamicForm.appendChild(document.createElement("br"));
+  }
+
+
+  var submitButton = document.createElement("button");
+  submitButton.type = "submit";
+  submitButton.textContent = "Agregar Jugadores";
+  submitButton.id = "submitNombres";
+  dynamicForm.appendChild(submitButton);
+  dynamicForm.onsubmit = function(e) {
+    e.preventDefault();
+
+    // Validar inputs
+    var inputs = dynamicForm.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].value.trim() === "") {
+        alert("Por favor, rellene todos los campos.");
+        return false; 
+      }
     }
-    let jugadores = [];
+    isFormValid = true;
+    return true;
+  };
+  document.getElementById("formularioNombres").appendChild(dynamicForm);
+});
+
+formularioNombre.addEventListener("submit", function(e){
+    if(!isFormValid) {
+        e.preventDefault();
+        return;
+    }
+    e.preventDefault();
+    toggleDiv("conf");
+    toggleDiv("formularioNombres");
+    //Creamos Jugadores
+
+    for (let i = 1; i <= cantidadJugadores; i++) {
+        nombres.push(document.getElementById("jugador" + i).value);
+    }
+
 
     for (let i = 0; i < cantidadJugadores; i++) {
         jugadores.push(new Jugador(nombres[i]));
     }
-    toggleDiv("conf");
+
+    //Seguimos a la pagina de leaderboard
+    crearLeaderboard();
 });
+
+botonEmpezarJuego.addEventListener("submit", function(e){
+    e.preventDefault();
+    toggleDiv("leaderboard");
+    toggleDiv("simulacion");
+});
+
+//Empezar simulacion de juego
+
+
+
 
 
 
@@ -63,6 +130,28 @@ function toggleDiv(id) {
 
 }
 
+function obtenerVictorias(nombre){
+    let victorias =  storage.getItem(nombre);
+    if(victorias == null){
+        return 0;
+    }
+    return victorias;
+}
+
+function crearLeaderboard(){
+    toggleDiv("leaderboard")
+    document.getElementById("leaderboard").innerHTML ="";
+
+    var dynamicLeaderboard = document.createElement("div");
+
+    var submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Empezar juego";
+    submitButton.id = "empezarJuego";
+    dynamicLeaderboard.appendChild(submitButton);
+    document.getElementById("leaderboard").appendChild(dynamicLeaderboard);
+}
+
 
 //################################################################ 
 //Classes
@@ -72,6 +161,7 @@ class Jugador {
         this.nombre = nombre;
         this.carton = new Carton(tamanoCarton);
         this.puntos = 0;
+        this.victorias = obtenerVictorias(nombre);
     }
 }
 
