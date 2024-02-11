@@ -106,7 +106,6 @@ formularioNombre.addEventListener("submit", function(e){
 
 
 botonEmpezarJuego.addEventListener("click", function(e){
-    console.log("click");
     toggleDiv("leaderboard");
     toggleDiv("simulacion");
 //Empezar simulacion de juego
@@ -160,55 +159,59 @@ function crearLeaderboard(){
 
 
 function crearJuego(){
-    console.log("Creando Juego");
-    let bingo = "BINGO";
 
     //creamos las tablas respectivas
-    for (let i = 0; i < jugadores.length; i++) {
-        console.log(jugadores[i].nombre);
+    
+    
+    let player = jugadores[0];
+    table = crearTabla(player);
 
-        let table = document.createElement("table");
-        const headerRow = document.createElement("tr");
-        let player = jugadores[i];
+    console.log("appending child table");
 
-        //Creamos el header row
-        for (let j = 0; j< tamanoCarton; i++) {
-            const headerCell = document.createElement("th");
-            headerCell.textContent = bingo[j];
-            headerRow.appendChild(headerCell);
-        }
-        table.appendChild(headerRow);
-        //creamos las siguientes lineas y celdas subsequentes
-        const numberRow = document.createElement("tr");
-
-        for (let j = 1; j <= tamanoCarton; i++) {
-            const bingoCell = document.createElement("th");
-            bingoCell.textContent = player.carton.numeros[j - 1];
-            numberRow.appendChild(bingoCell);
-
-            if(j%tamanoCarton == 0){
-                //Appendamos la linea y seguimos a la proxima
-                table.appendChild(numberRow);
-                numberRow = document.createElement("tr"); 
-            }
-        
-        }
-
-        table.id = "carton" + player.nombre;
-        console.log(table);
-        console.log("appending child table");
-        var playerButton = document.createElement("button");
-        playerButton.type = "button";
-        playerButton.textContent = player.nombre;
-        playerButton.id = "boton" + player.nombre;
-        divSimulacion.appendChild(playerButton);
-        table.style.display = "none";
-        divSimulacion.appendChild(table);
-        console.log("Creado" + player.nombre);
+    //Creamos el boton para cada jugador
+    for (let j = 0; j< jugadores.length; j++) {
+    var playerButton = document.createElement("button");
+    playerButton.type = "button";
+    playerButton.textContent = jugadores[j].nombre;
+    playerButton.id = "boton" + jugadores[j].nombre;
+    divSimulacion.appendChild(playerButton);
     }
-    playerButton.style.display = "none";
+
+
     table.style.display = "block";
+    divSimulacion.appendChild(table);
+
+
 }
+
+function crearTabla(player){
+
+    const bingo = "BINGO";
+    let table = document.createElement("table");
+    let headerRow = document.createElement("tr");
+
+    //Creamos el header row
+    for (let j = 0; j< tamanoCarton; j++) {
+        const headerCell = document.createElement("th");
+        headerCell.textContent = bingo[j];
+        headerRow.appendChild(headerCell);
+    }
+    table.appendChild(headerRow);
+
+    // Creamos las siguientes filas y celdas subsequentes
+    for (let i = 0; i < player.carton.numeros.length; i++) {
+        let numberRow = document.createElement("tr");
+        for (let j = 0; j < tamanoCarton; j++) {
+        const bingoCell = document.createElement("td");
+        bingoCell.textContent = player.carton.numeros[i * tamanoCarton + j];
+        numberRow.appendChild(bingoCell);
+        }
+        table.appendChild(numberRow);
+    }
+
+    table.id = "carton" + player.nombre;
+    return table;
+    }
 
 
 
