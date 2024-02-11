@@ -12,6 +12,7 @@ const storage = window.localStorage;
 const formularioInicial = document.getElementById('formulario');
 const formularioNombre = document.getElementById('formularioNombres');
 const botonEmpezarJuego = document.getElementById("empezarJuego");
+const divSimulacion = document.getElementById('simulacion');
 
 
 // Variables para el juego
@@ -100,17 +101,19 @@ formularioNombre.addEventListener("submit", function(e){
     }
 
     //Seguimos a la pagina de leaderboard
-    console.log("Entramos a crear pagina de leaderboard");
     crearLeaderboard();
 });
 
-botonEmpezarJuego.addEventListener("submit", function(e){
-    e.preventDefault();
+
+botonEmpezarJuego.addEventListener("click", function(e){
+    console.log("click");
     toggleDiv("leaderboard");
     toggleDiv("simulacion");
+//Empezar simulacion de juego
+    crearJuego();
 });
 
-//Empezar simulacion de juego
+
 
 
 
@@ -142,11 +145,71 @@ function obtenerVictorias(nombre){
 
 function crearLeaderboard(){
     leaderboard = storage.getItem("leaderboard");
-    console.log("Creando Leaderboard");
-    console.log(leaderboard);
     toggleDiv("leaderboard")
+    //al div de leaderboard le agregamos la tabla para el leaderboard si no esta null.
+    if(leaderboard != null){
+        console.log(leaderboard);
+    }else{
+        var noPlayers = document.createElement("title");
+        noPlayers.textContent = "No hay jugadores previos.";
+        document.getElementById("leaderboard").appendChild(noPlayers);
+        noPlayers.style.display = "block";
+    }
 
-   }
+}
+
+
+function crearJuego(){
+    console.log("Creando Juego");
+    let bingo = "BINGO";
+
+    //creamos las tablas respectivas
+    for (let i = 0; i < jugadores.length; i++) {
+        console.log(jugadores[i].nombre);
+
+        let table = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        let player = jugadores[i];
+
+        //Creamos el header row
+        for (let j = 0; j< tamanoCarton; i++) {
+            const headerCell = document.createElement("th");
+            headerCell.textContent = bingo[j];
+            headerRow.appendChild(headerCell);
+        }
+        table.appendChild(headerRow);
+        //creamos las siguientes lineas y celdas subsequentes
+        const numberRow = document.createElement("tr");
+
+        for (let j = 1; j <= tamanoCarton; i++) {
+            const bingoCell = document.createElement("th");
+            bingoCell.textContent = player.carton.numeros[j - 1];
+            numberRow.appendChild(bingoCell);
+
+            if(j%tamanoCarton == 0){
+                //Appendamos la linea y seguimos a la proxima
+                table.appendChild(numberRow);
+                numberRow = document.createElement("tr"); 
+            }
+        
+        }
+
+        table.id = "carton" + player.nombre;
+        console.log(table);
+        console.log("appending child table");
+        var playerButton = document.createElement("button");
+        playerButton.type = "button";
+        playerButton.textContent = player.nombre;
+        playerButton.id = "boton" + player.nombre;
+        divSimulacion.appendChild(playerButton);
+        table.style.display = "none";
+        divSimulacion.appendChild(table);
+        console.log("Creado" + player.nombre);
+    }
+    playerButton.style.display = "none";
+    table.style.display = "block";
+}
+
 
 
 //################################################################ 
