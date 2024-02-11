@@ -23,6 +23,7 @@ let numerosSacados = [];
 let opciones = [];
 let jugadores = [];
 let isFormValid = false;
+let leaderboard = [];
 
 
 
@@ -99,6 +100,7 @@ formularioNombre.addEventListener("submit", function(e){
     }
 
     //Seguimos a la pagina de leaderboard
+    console.log("Entramos a crear pagina de leaderboard");
     crearLeaderboard();
 });
 
@@ -139,18 +141,12 @@ function obtenerVictorias(nombre){
 }
 
 function crearLeaderboard(){
+    leaderboard = storage.getItem("leaderboard");
+    console.log("Creando Leaderboard");
+    console.log(leaderboard);
     toggleDiv("leaderboard")
-    document.getElementById("leaderboard").innerHTML ="";
 
-    var dynamicLeaderboard = document.createElement("div");
-
-    var submitButton = document.createElement("button");
-    submitButton.type = "submit";
-    submitButton.textContent = "Empezar juego";
-    submitButton.id = "empezarJuego";
-    dynamicLeaderboard.appendChild(submitButton);
-    document.getElementById("leaderboard").appendChild(dynamicLeaderboard);
-}
+   }
 
 
 //################################################################ 
