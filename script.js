@@ -166,8 +166,6 @@ function crearJuego(){
     let player = jugadores[0];
     table = crearTabla(player);
 
-    console.log("appending child table");
-
     //Creamos el boton para cada jugador
     for (let j = 0; j< jugadores.length; j++) {
     var playerButton = document.createElement("button");
@@ -175,17 +173,21 @@ function crearJuego(){
     playerButton.textContent = jugadores[j].nombre;
     playerButton.id = "boton" + jugadores[j].nombre;
     divSimulacion.appendChild(playerButton);
+    playerButton.addEventListener("click",function(){
+        
+        crearTabla(player);
+    });
     }
 
 
-    table.style.display = "block";
+    
     divSimulacion.appendChild(table);
 
 
 }
 
 function crearTabla(player){
-
+    console.log("Creatint table" + player.nombre);
     const bingo = "BINGO";
     let table = document.createElement("table");
     let headerRow = document.createElement("tr");
@@ -210,6 +212,7 @@ function crearTabla(player){
     }
 
     table.id = "carton" + player.nombre;
+    table.style.display = "block";
     return table;
     }
 

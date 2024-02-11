@@ -1,3 +1,10 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #ff00a1;
+  }
+
 #inicio {
     display: block;
     border: 5px solid;
@@ -14,13 +21,33 @@
 }
 #conf{
     display: none;
+    border: 5px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
 }
 #formularioNombres{
     display: none;
+    border: 5px solid;
+    padding: 10px;
 }
 #leaderboard{
     display: none;
+    border: 5px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
 }
 #simulacion{
     display: none;
+    border: 5px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
 }
