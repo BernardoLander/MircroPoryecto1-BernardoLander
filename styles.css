@@ -3,10 +3,12 @@ body {
     margin: 0;
     padding: 20px;
     background-color: #ff00a1;
+    color: azure;
   }
 
 #inicio {
     display: block;
+    color: azure;
     border: 5px solid;
     position: absolute;
     top: 50%;

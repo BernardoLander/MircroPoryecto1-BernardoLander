@@ -174,8 +174,7 @@ function crearJuego(){
     playerButton.id = "boton" + jugadores[j].nombre;
     divSimulacion.appendChild(playerButton);
     playerButton.addEventListener("click",function(){
-        
-        crearTabla(player);
+        crearTabla(jugadores[j]);
     });
     }
 
@@ -187,7 +186,8 @@ function crearJuego(){
 }
 
 function crearTabla(player){
-    console.log("Creatint table" + player.nombre);
+    
+    console.log("Creating table" + player.nombre);
     const bingo = "BINGO";
     let table = document.createElement("table");
     let headerRow = document.createElement("tr");
